@@ -28,7 +28,7 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl("https://your-api-url.com/")
+            .baseUrl("http://127.0.0.1:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApi::class.java)
