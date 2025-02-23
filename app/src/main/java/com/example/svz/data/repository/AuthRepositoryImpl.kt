@@ -11,8 +11,14 @@ import com.example.svz.domain.models.RegisterResponse
 import com.example.svz.domain.models.TokenRequest
 import com.example.svz.domain.models.TokenResponse
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class AuthRepositoryImpl(private val api: AuthApi, private val tokenManager: TokenManager) : AuthRepository {
+@Singleton
+class AuthRepositoryImpl @Inject constructor(
+    private val api: AuthApi,
+    private val tokenManager: TokenManager
+) : AuthRepository  {
     override suspend fun registerUser(email: String, password: String, password2: String) {
         val response = api.registerUser(RegisterRequest(email, password, password2))
         if (response.isSuccessful) {

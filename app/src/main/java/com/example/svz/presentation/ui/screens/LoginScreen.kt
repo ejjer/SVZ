@@ -16,6 +16,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,12 +28,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.svz.presentation.ui.theme.SVZTheme
+import com.example.svz.presentation.viewModels.LoginViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.svz.domain.models.Result
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(viewModel: LoginViewModel = viewModel()) {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
+    val loginState by viewModel.loginState.observeAsState()
+
     SVZTheme {
         Scaffold(
             content = { paddingValues ->
@@ -78,7 +85,7 @@ fun LoginScreen() {
                     }
 
                     Button(
-                        onClick = { /* Логика входа */ },
+                        onClick = { viewModel.login(email.value, password.value) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -89,16 +96,15 @@ fun LoginScreen() {
                     ) {
                         Text(text = "Войти")
                     }
+
+                    when (val state = loginState) {
+                        is Result.Success -> Text("Вход выполнен успешно!", color = Color.Green)
+                        is Result.Failure -> Text("Ошибка: ${state.exceptionOrNull()?.message}", color = Color.Red)
+                        is Result.Loading -> Text("Ожидание...", color = Color.Gray)
+                        else -> Text("Ожидание...", color = Color.Gray)
+                    }
                 }
             }
         )
-    }
-}
-
-@Preview
-@Composable
-fun LoginScreenPreview() {
-    SVZTheme {
-        LoginScreen()
     }
 }
