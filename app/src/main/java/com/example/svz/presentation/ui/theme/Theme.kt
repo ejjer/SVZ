@@ -1,4 +1,4 @@
-package com.example.svz.ui.theme
+package com.example.svz.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
