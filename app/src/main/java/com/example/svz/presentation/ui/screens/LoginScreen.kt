@@ -1,6 +1,5 @@
-package com.example.svz.ui.screens
+package com.example.svz.presentation.ui.screens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,20 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.svz.R
-import com.example.svz.ui.theme.SVZTheme
+import com.example.svz.presentation.ui.theme.SVZTheme
 
-@Preview
 @Composable
-fun RegistrationScreen() {
+fun LoginScreen() {
     val email = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
-    val confirmPassword = remember { mutableStateOf("") }
     val isChecked = remember { mutableStateOf(false) }
     SVZTheme {
         Scaffold(
@@ -46,33 +41,13 @@ fun RegistrationScreen() {
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-
-                    Image(
-                        painter = painterResource(R.drawable.logo),
-                        contentDescription = "logo",
-                    )
-
-                    Image(
-                        painter = painterResource(R.drawable.arrow),
-                        contentDescription = "back",
-                    )
-
                     Text(
-                        text = "Добро пожаловать в мир су-вид!",
+                        text = "С возвращением в мир су-вид!",
                         style = MaterialTheme.typography.headlineLarge,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF45624E),
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     )
-
-
-                    Text(
-                        text = "Регистрация",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = Color(0xFF45624E),
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-
 
                     OutlinedTextField(
                         value = email.value,
@@ -82,7 +57,6 @@ fun RegistrationScreen() {
                         singleLine = true
                     )
 
-
                     OutlinedTextField(
                         value = password.value,
                         onValueChange = { password.value = it },
@@ -91,17 +65,6 @@ fun RegistrationScreen() {
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true
                     )
-
-
-                    OutlinedTextField(
-                        value = confirmPassword.value,
-                        onValueChange = { confirmPassword.value = it },
-                        label = { Text("Введите пароль еще раз") },
-                        visualTransformation = PasswordVisualTransformation(),
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
-                    )
-
 
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -114,9 +77,8 @@ fun RegistrationScreen() {
                         Text(text = "Чужой компьютер", modifier = Modifier.padding(start = 8.dp))
                     }
 
-
                     Button(
-                        onClick = { /* Обработчик для регистрации */ },
+                        onClick = { /* Логика входа */ },
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -125,23 +87,18 @@ fun RegistrationScreen() {
                             contentColor = Color.White
                         )
                     ) {
-                        Text(text = "Зарегистрироваться")
-                    }
-
-
-                    Row(
-                        horizontalArrangement = Arrangement.Center,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Text(text = "У вас уже есть аккаунт? ", color = Color.Black)
-                        Text(
-                            text = "Войти в аккаунт",
-                            color = Color(0xFF45624E),
-                            modifier = Modifier.clickable { /* Обработчик для входа */ }
-                        )
+                        Text(text = "Войти")
                     }
                 }
             }
         )
+    }
+}
+
+@Preview
+@Composable
+fun LoginScreenPreview() {
+    SVZTheme {
+        LoginScreen()
     }
 }

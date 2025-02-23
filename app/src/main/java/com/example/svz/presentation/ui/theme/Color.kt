@@ -1,4 +1,4 @@
-package com.example.svz.ui.theme
+package com.example.svz.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
