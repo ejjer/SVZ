@@ -5,6 +5,7 @@ import com.example.svz.data.AuthApi
 import com.example.svz.data.local.TokenManager
 import com.example.svz.data.repository.AuthRepositoryImpl
 import com.example.svz.domain.AuthRepository
+import com.example.svz.domain.useCase.LoginUseCase
 import com.example.svz.domain.useCase.RegisterUserUseCase
 import dagger.Module
 import dagger.Provides
@@ -43,5 +44,11 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideRegisterUserUseCase(authRepository: AuthRepository): RegisterUserUseCase {
         return RegisterUserUseCase(authRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideLoginUseCase(authRepository: AuthRepository): LoginUseCase {
+        return LoginUseCase(authRepository)
     }
 }
