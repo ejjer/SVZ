@@ -1,6 +1,6 @@
 package com.example.svz.domain
 
-import com.example.svz.domain.models.TokenResponse
+import com.example.svz.domain.models.auth.TokenResponse
 
 interface AuthRepository {
     suspend fun registerUser(email: String, password: String, password2: String)

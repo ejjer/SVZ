@@ -3,14 +3,10 @@ package com.example.svz.data.repository
 import com.example.svz.data.AuthApi
 import com.example.svz.data.local.TokenManager
 import com.example.svz.domain.AuthRepository
-import com.example.svz.domain.models.AccessTokenResponse
-import com.example.svz.domain.models.LoginRequest
-import com.example.svz.domain.models.RefreshRequest
-import com.example.svz.domain.models.RegisterRequest
-import com.example.svz.domain.models.RegisterResponse
-import com.example.svz.domain.models.TokenRequest
-import com.example.svz.domain.models.TokenResponse
-import retrofit2.Response
+import com.example.svz.domain.models.auth.LoginRequest
+import com.example.svz.domain.models.auth.RefreshRequest
+import com.example.svz.domain.models.auth.RegisterRequest
+import com.example.svz.domain.models.auth.TokenResponse
 import javax.inject.Inject
 import javax.inject.Singleton
 

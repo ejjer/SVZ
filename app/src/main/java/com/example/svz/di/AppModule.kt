@@ -2,9 +2,12 @@ package com.example.svz.di
 
 import android.content.Context
 import com.example.svz.data.AuthApi
+import com.example.svz.data.RecipeApi
 import com.example.svz.data.local.TokenManager
 import com.example.svz.data.repository.AuthRepositoryImpl
+import com.example.svz.data.repository.RecipeRepositoryImpl
 import com.example.svz.domain.AuthRepository
+import com.example.svz.domain.RecipeRepository
 import com.example.svz.domain.useCase.LoginUseCase
 import com.example.svz.domain.useCase.RegisterUserUseCase
 import dagger.Module
@@ -36,8 +39,24 @@ class AppModule(private val context: Context) {
 
     @Provides
     @Singleton
+    fun provideRecipeApi(): RecipeApi {
+        return Retrofit.Builder()
+            .baseUrl("http://127.0.0.1:8000/api/v1/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(RecipeApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthRepository(authApi: AuthApi, tokenManager: TokenManager): AuthRepository {
         return AuthRepositoryImpl(authApi, tokenManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRecipeRepository(recipeApi: RecipeApi): RecipeRepository {
+        return RecipeRepositoryImpl(recipeApi)
     }
 
     @Provides
