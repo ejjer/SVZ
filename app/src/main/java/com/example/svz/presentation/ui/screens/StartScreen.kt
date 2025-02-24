@@ -6,10 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +57,18 @@ fun StartScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(0.8f)
                 ) {
                     Text(text = "Зарегистрироваться")
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Текстовая кнопка "Продолжить без регистрации"
+                TextButton(
+                    onClick = { navController.navigate("recipeList") }, // Навигация на RecipeListScreen
+                    modifier = Modifier.fillMaxWidth(0.8f)
+                ) {
+                    Text(
+                        text = "Продолжить без регистрации",
+                        color = MaterialTheme.colorScheme.primary // Используйте цвет из темы
+                    )
                 }
             }
         }
