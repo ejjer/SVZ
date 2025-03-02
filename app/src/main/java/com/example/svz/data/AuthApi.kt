@@ -11,12 +11,12 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthApi {
-    @POST("api/v1/auth/users/")
+    @POST("auth/users/")
     suspend fun registerUser(@Body request: RegisterRequest): Response<RegisterResponse>
 
-    @POST("api/v1/auth/jwt/create/")
+    @POST("auth/jwt/create/")
     suspend fun login(@Body request: LoginRequest): Response<TokenResponse>
 
-    @POST("api/v1/auth/jwt/refresh/")
+    @POST("auth/jwt/refresh/")
     suspend fun refreshToken(@Body request: RefreshRequest): Response<AccessTokenResponse>
 }
