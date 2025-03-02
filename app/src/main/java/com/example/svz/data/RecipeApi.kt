@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RecipeApi {
-    @GET("api/v1/feed/")
+    @GET("feed/")
     suspend fun getPopularRecipes(
         @Query("ordering") ordering: String = "-activity_count",
         @Query("page") page: Int = 1
