@@ -1,5 +1,6 @@
 package com.example.svz.presentation.viewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.svz.domain.RecipeRepository
@@ -13,26 +14,40 @@ class RecipeListViewModel @Inject constructor(
     private val repository: RecipeRepository
 ) : ViewModel() {
 
-    private val _recipes = MutableStateFlow<List<Recipe>>(emptyList())
-    val recipes: StateFlow<List<Recipe>> get() = _recipes
+    // Состояние экрана
+    sealed class RecipeListState {
+        object Loading : RecipeListState() // Состояние загрузки
+        data class Success(val recipes: List<Recipe>) : RecipeListState() // Успешная загрузка
+        data class Error(val message: String) : RecipeListState() // Ошибка
+    }
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> get() = _isLoading
+    // Поток для управления состоянием
+    private val _state = MutableStateFlow<RecipeListState>(RecipeListState.Loading)
+    val state: StateFlow<RecipeListState> get() = _state
 
-    private val _error = MutableStateFlow<String?>(null)
-    val error: StateFlow<String?> get() = _error
-
+    // Загрузка рецептов
     fun loadRecipes(page: Int = 1) {
         viewModelScope.launch {
-            _isLoading.value = true
-            _error.value = null
+            // Логируем начало загрузки
+            Log.d("RecipeListViewModel", "Начало загрузки рецептов, страница: $page")
+
+            _state.value = RecipeListState.Loading // Устанавливаем состояние загрузки
+
             try {
-                val result = repository.getPopularRecipes(page)
-                _recipes.value = result
+                // Логируем попытку загрузки данных
+                Log.d("RecipeListViewModel", "Загрузка данных...")
+
+                val recipes = repository.getPopularRecipes(page) // Загружаем данные
+
+                // Логируем успешную загрузку
+                Log.d("RecipeListViewModel", "Данные успешно загружены. Количество рецептов: ${recipes.size}")
+
+                _state.value = RecipeListState.Success(recipes) // Устанавливаем состояние успеха
             } catch (e: Exception) {
-                _error.value = "Ошибка загрузки рецептов: ${e.message}"
-            } finally {
-                _isLoading.value = false
+                // Логируем ошибку
+                Log.e("RecipeListViewModel", "Ошибка загрузки рецептов: ${e.message}", e)
+
+                _state.value = RecipeListState.Error("Ошибка загрузки рецептов: ${e.message}") // Устанавливаем состояние ошибки
             }
         }
     }

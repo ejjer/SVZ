@@ -13,6 +13,7 @@ import com.example.svz.presentation.ui.screens.LoginScreen
 import com.example.svz.presentation.ui.screens.RecipeListScreen
 import com.example.svz.presentation.ui.screens.RegistrationScreen
 import com.example.svz.presentation.viewModels.LoginViewModel
+import com.example.svz.presentation.viewModels.RegisterViewModel
 import javax.inject.Provider
 
 @Composable
