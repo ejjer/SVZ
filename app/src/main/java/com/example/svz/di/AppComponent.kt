@@ -8,4 +8,5 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class, ViewModelModule::class])
 interface AppComponent {
     fun inject(activity: MainActivity)
+    fun getViewModelFactory(): DaggerViewModelFactory
 }

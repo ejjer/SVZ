@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,64 +15,68 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.svz.App
 import com.example.svz.presentation.viewModels.RecipeListViewModel
-import com.example.svz.presentation.ui.screens.TopBar
-import com.example.svz.presentation.ui.screens.BottomBar
-import com.example.svz.presentation.ui.screens.RecipeCard
-import com.example.svz.domain.models.Recipe
-import androidx.compose.material3.MaterialTheme
-
 
 @Composable
 fun RecipeListScreen(
-    viewModel: RecipeListViewModel = viewModel()
+    viewModel: RecipeListViewModel = viewModel(
+        factory = (LocalContext.current.applicationContext as App)
+            .appComponent
+            .getViewModelFactory()
+    )
 ) {
-    val recipes by viewModel.recipes.collectAsState()
-    val isLoading by viewModel.isLoading.collectAsState()
-    val error by viewModel.error.collectAsState()
+    // Состояние экрана
+    val state by viewModel.state.collectAsState()
 
+    // Автоматическая загрузка рецептов при открытии экрана
     LaunchedEffect(Unit) {
         viewModel.loadRecipes()
     }
 
+    // Отображение UI в зависимости от состояния
     Scaffold(
-        topBar = {
-            TopBar(title = "Популярные рецепты")
-        },
-        bottomBar = {
-            BottomBar()
-        }
+        topBar = { TopBar(title = "Популярные рецепты") },
+        bottomBar = { BottomBar() }
     ) { paddingValues ->
-        if (isLoading) {
-            // Покажите индикатор загрузки по центру экрана
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
+        when (val currentState = state) {
+            is RecipeListViewModel.RecipeListState.Loading -> {
+                // Отображение индикатора загрузки
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
             }
-        } else if (error != null) {
-            // Покажите сообщение об ошибке
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = error!!, color = MaterialTheme.colorScheme.error)
+            is RecipeListViewModel.RecipeListState.Success -> {
+                // Отображение списка рецептов
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    items(currentState.recipes) { recipe ->
+                        RecipeCard(recipe)
+                    }
+                }
             }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                items(recipes) { recipe ->
-                    RecipeCard(recipe)
+            is RecipeListViewModel.RecipeListState.Error -> {
+                // Отображение ошибки
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = currentState.message,
+                        color = MaterialTheme.colorScheme.error
+                    )
                 }
             }
         }

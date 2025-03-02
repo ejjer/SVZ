@@ -31,7 +31,7 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideAuthApi(): AuthApi {
         return Retrofit.Builder()
-            .baseUrl("http://127.0.0.1:8000/api/v1/")
+            .baseUrl("http://147.45.76.77:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(AuthApi::class.java)
@@ -41,7 +41,7 @@ class AppModule(private val context: Context) {
     @Singleton
     fun provideRecipeApi(): RecipeApi {
         return Retrofit.Builder()
-            .baseUrl("http://127.0.0.1:8000/api/v1/")
+            .baseUrl("http://147.45.76.77:8000/api/v1/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RecipeApi::class.java)
